@@ -12,6 +12,7 @@ __pycache__/
 # Ignore virtual environments (if you're using one)
 venv/
 .y_env/
+y_env/
 
 # Ignore API keys and config files (never commit sensitive info!)
 .env
