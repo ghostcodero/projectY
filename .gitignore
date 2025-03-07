@@ -1,10 +1,18 @@
-# Ignore virtual environments
-venv/
-my_env/
+# Ignore downloaded YouTube videos/audio files
+downloads/
 
-# Byte-compiled / optimized / DLL files
+# Ignore Python cache files
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
 
-# Jupyter Notebook checkpoints
+# Ignore Jupyter Notebook checkpoints (if using Jupyter)
 .ipynb_checkpoints/
+
+# Ignore virtual environments (if you're using one)
+venv/
+.y_env/
+
+# Ignore API keys and config files (never commit sensitive info!)
+.env
+config.json
