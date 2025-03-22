@@ -7,3 +7,4 @@ def sanitize_filename(filename):
     filename = re.sub(r'[^\w\s-]', '', filename).strip()  # Remove special characters
     filename = re.sub(r'[-\s]+', '-', filename)  # Replace spaces with hyphens
     return filename
+

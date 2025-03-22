@@ -35,8 +35,8 @@ def extract_predictions(transcript):
         print("No clear predictions found.")
         return []
 
-    print("\nExtracted Predictions:")
-    for p in predictions_list:
-        print(f"- {p}")
+    # print("\nExtracted Predictions:")
+    # for p in predictions_list:
+    #     print(f"- {p}")
 
     return predictions_list  # Returns a clean list of predictions

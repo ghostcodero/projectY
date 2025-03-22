@@ -2,12 +2,11 @@ from projectY_modules import utilities
 import os
 import yt_dlp
 
-
-def download_audio():
-    youtube_url = input("Enter the YouTube video URL: ")
-
+def download_audio(youtube_url):
+    
     download_dir = "downloads"
     os.makedirs(download_dir, exist_ok=True)
+
 
     try:
         print("Fetching video info...")
