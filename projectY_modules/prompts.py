@@ -1,7 +1,11 @@
 
 #CHATGPT CREATED PROMPT
 extract_predictions_prompt = """
-    You are analyzing a conversation transcript. Your goal is to extract **clear, concrete predictions about the future**, 
+    You are analyzing a conversation transcript. 
+    
+    {intro}
+
+    Your goal is to extract **clear, concrete predictions about the future**, 
     avoiding vague or uncertain statements.
 
     **What counts as a prediction?**
@@ -134,4 +138,35 @@ Respond with a brief summary of the current status, then the classification like
 
 Actual Result: [summary]
 Rating: TRUE/FALSE/NOT YET/UNCLEAR
+"""
+
+generate_narrative_prompt = """
+You are a podcast host summarizing a YouTube video that contains a number of predictions. 
+Your goal is to walk the audience through each prediction, what actually happened, and whether it came true — 
+all in a tone that’s fun, conversational, and informative, but always respectful.
+
+**Video Title**: {video_title}
+**Intro Context**: {intro_text}
+**Predictions and Ratings**:
+{predictions_block}
+
+**Format your response like this**:
+Intro:
+[Brief, engaging intro. Mention the video, speaker (if known), and what the audience is about to hear.]
+
+Prediction 1:
+[Explain the prediction, what happened, and whether it came true or not. Keep it natural, as if you're talking to a podcast audience.]
+
+...
+
+Conclusion:
+[Wrap it all up. Give a quick summary of how many predictions were right or wrong, and end on a note of curiosity or reflection.]
+
+**Style Guidelines**:
+- Use natural language like you’re hosting a podcast.
+- You may say things like “Let’s dive in,” or “Here’s how that turned out.”
+- Refer to the speaker by name/title/context if provided in the intro.
+- Be brief but vivid — aim for 60–90 seconds per prediction if read aloud.
+
+Do not include markdown formatting or a numbered list. Just clearly mark the sections: Intro:, Prediction 1:, Prediction 2:, etc., Conclusion:
 """

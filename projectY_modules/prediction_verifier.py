@@ -28,7 +28,7 @@ def verify_prediction(prediction, search_snippets):
 
     return response.choices[0].message.content.strip()
 
-def verify_prediction_with_perplexity(prediction):
+def verify_prediction_with_perplexity(prediction, verbose):
     """Use Perplexity API to verify if a prediction is TRUE, FALSE, UNCLEAR, or NOT YET."""
 
     api_key = os.getenv("PERPLEXITY_API_KEY")
@@ -60,7 +60,8 @@ def verify_prediction_with_perplexity(prediction):
         )
         response.raise_for_status()
         response_text = response.json()["choices"][0]["message"]["content"]
-        print(response_text)  # Debug: see the full raw response
+        if (verbose):
+            print(response_text)  # Debug: see the full raw response
         return response.json()["choices"][0]["message"]["content"].strip()
 
     except requests.exceptions.HTTPError as e:
