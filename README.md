@@ -27,6 +27,18 @@ A tool for analyzing and verifying predictions from YouTube videos or transcript
 
 ## Installation
 
+### Prerequisites
+
+1. Install FFmpeg (required for audio processing):
+   - **Windows**: Download from [FFmpeg official site](https://ffmpeg.org/download.html) or install via [Chocolatey](https://chocolatey.org/): `choco install ffmpeg`
+   - **macOS**: Install via Homebrew: `brew install ffmpeg`
+   - **Linux**: Install via package manager:
+     - Ubuntu/Debian: `sudo apt-get install ffmpeg`
+     - Fedora: `sudo dnf install ffmpeg`
+     - Arch Linux: `sudo pacman -S ffmpeg`
+
+### Python Setup
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/ghostcodero/projectY
