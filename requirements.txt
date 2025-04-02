@@ -1,4 +1,7 @@
 # Core dependencies
 openai==1.65.4
 yt-dlp==2025.3.27
-requests==2.32.3 
+requests==2.32.3
+
+# Audio processing
+pydub==0.25.1 

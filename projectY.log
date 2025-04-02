@@ -86,3 +86,4 @@ Traceback (most recent call last):
   File "C:\Users\aliak\.conda\envs\y_env\lib\site-packages\yt_dlp\YoutubeDL.py", line 1050, in trouble
     raise DownloadError(message, exc_info)
 yt_dlp.utils.DownloadError: ERROR: [generic] 'Enter the YouTube video URL: https://www.youtube.com/watch?v=2-RdwZ51CUs' is not a valid URL. Set --default-search "ytsearch" (or run  yt-dlp "ytsearch:Enter the YouTube video URL: https://www.youtube.com/watch?v=2-RdwZ51CUs" ) to search YouTube
+2025-04-01 18:23:18 - projectY_modules.transcriber - WARNING - File size (42.10MB) exceeds Whisper API limit of 25MB
