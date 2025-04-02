@@ -37,11 +37,14 @@ def setup_logging(verbose):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Verify predictions from YouTube or transcript.")
+    # Add -? as an alternative to -h/--help
+    parser.add_argument("-?", action="help", help=argparse.SUPPRESS)
+    
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-t", "--transcript", help="Path to a local transcript text file")
     group.add_argument("-u", "--url", help="YouTube video URL to download audio from")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output")
-    parser.add_argument("--intro-file", type=str, help="Optional path to a file with introductory context for the transcript.")
+    parser.add_argument("-i", "--intro-file", type=str, help="Optional path to a file with introductory context for the transcript.")
     return parser.parse_args()
 
 def main():

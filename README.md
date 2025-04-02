@@ -83,11 +83,55 @@ projectY/
 │   ├── config.py           # Configuration and environment
 │   ├── prompts.py          # AI prompts
 │   └── utilities.py        # Utility functions
-├── downloads/              # Downloaded audio files
-├── transcripts/           # Generated transcripts
-├── projectY.log          # Application log file
+├── downloads/              # Downloaded audio files (git-ignored)
+├── transcripts/           # Generated transcripts (git-ignored)
+├── intros/               # Introductory context files (git-ignored)
+├── projectY.log          # Application log file (git-ignored)
 └── requirements.txt       # Project dependencies
 ```
+
+## Directory Structure
+
+### downloads/
+- Contains downloaded audio files from YouTube videos
+- Files are automatically downloaded when processing YouTube URLs
+- Format: MP3 files named after the video title
+- Note: This directory is git-ignored as it contains downloaded content
+
+### transcripts/
+- Contains generated transcripts from audio files
+- Created automatically when processing audio or YouTube videos
+- Format: Text files named after the source audio/video
+- Note: This directory is git-ignored as it contains generated content
+
+### intros/
+- Contains introductory context files for transcripts
+- Optional files that provide additional context for analysis
+- Format: Text files with contextual information
+- Note: This directory is git-ignored as it contains user-specific content
+- Usage:
+  - Files in this directory can be referenced using the `--intro-file` option
+  - The content is prepended to the transcript before analysis
+  - Useful for providing background information, speaker context, or domain-specific knowledge
+  - Example: `--intro-file intros/BruceKasmanIntro.txt` will include Bruce Kasman's background before analyzing his predictions
+  - The intro text helps the AI better understand the context and credibility of the predictions
+
+### How Intro Files Work
+1. When you specify an intro file using `--intro-file`, the system:
+   - Reads the content from the specified file in the `intros/` directory
+   - Prepends this content to the transcript before analysis
+   - Uses this combined text for prediction extraction and verification
+2. This helps the AI by providing:
+   - Speaker background and expertise
+   - Historical context
+   - Domain-specific terminology
+   - Previous prediction track record
+3. Example intro file content:
+   ```
+   Bruce Kasman is the Chief Economist at JPMorgan Chase, with over 30 years of experience in economic forecasting. 
+   He has a strong track record in predicting economic trends and has been recognized for his accurate forecasts 
+   in the financial sector.
+   ```
 
 ## Dependencies
 
