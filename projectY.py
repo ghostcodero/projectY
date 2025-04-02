@@ -123,7 +123,7 @@ def main():
         print("="*50)
 
         # Generate and display podcast-style narrative
-        print("\nPodcast-Style Narrative\n" + "="*50)
+        print("Podcast-Style Narrative\n" + "="*50)
         narrative = narrative_generator.generate_narrative(
             video_title=video_title,
             intro_text=intro_text,

@@ -59,14 +59,27 @@ Analyze a local transcript:
 python projectY.py -t path/to/transcript.txt
 ```
 
-### Advanced Options
+### Command Line Options
 
-- `-v, --verbose`: Enable verbose output (sets logging level to INFO)
-- `--intro-file`: Provide additional context for the transcript
+- `-?`, `-h`, `--help`: Display help message and command options
+- `-t`, `--transcript`: Path to a local transcript text file
+- `-u`, `--url`: YouTube video URL to download audio from
+- `-v`, `--verbose`: Enable verbose output (sets logging level to INFO)
+- `-i`, `--intro-file`: Path to a file with introductory context for the transcript
 
 Example with all options:
 ```bash
-python projectY.py -u "https://www.youtube.com/watch?v=VIDEO_ID" -v --intro-file context.txt
+python projectY.py -u "https://www.youtube.com/watch?v=VIDEO_ID" -v -i intros/context.txt
+```
+
+### Using Intro Files
+You can provide additional context for the analysis using an intro file:
+```bash
+# Using short form
+python projectY.py -u "VIDEO_URL" -i intros/expert_background.txt
+
+# Using long form
+python projectY.py -u "VIDEO_URL" --intro-file intros/expert_background.txt
 ```
 
 ## Project Structure
