@@ -1,3 +1,4 @@
+from projectY_modules import config
 from projectY_modules import downloader 
 from projectY_modules import transcriber
 from projectY_modules import prediction_extractor

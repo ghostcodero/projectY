@@ -1,17 +1,13 @@
 import os
 import openai
+from projectY_modules.config import OPENAI_API_KEY
 
 def transcribe_audio(file_path, verbose):
     """Sends an MP3 file to OpenAI's Whisper API, saves the transcript, and returns it."""
-    api_key = os.getenv("OPENAI_API_KEY")  # Load API key securely
-
-    if not api_key:
-        raise ValueError("OpenAI API key is missing. Set the OPENAI_API_KEY environment variable.")
-
     if (verbose):
         print("Transcribing audio...")
 
-    client = openai.OpenAI(api_key=api_key)
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
     with open(file_path, "rb") as audio_file:
         response = client.audio.transcriptions.create(
             model="whisper-1",

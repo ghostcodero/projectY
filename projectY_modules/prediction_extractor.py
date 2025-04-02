@@ -1,22 +1,16 @@
-import os
 import openai
 import re
-
 from projectY_modules import prompts
+from projectY_modules.config import OPENAI_API_KEY
 
 def extract_predictions(transcript, verbose, intro=""):
     """Sends the transcription to GPT-4-Turbo and extracts predictions as a Python list."""
     
-    api_key = os.getenv("OPENAI_API_KEY")  # Load API key
-
-    if not api_key:
-        raise ValueError("OpenAI API key is missing. Set the OPENAI_API_KEY environment variable.")
-
     if (verbose):
         print("Analyzing transcript for predictions...")
 
-     # Send the request to OpenAI's GPT-4-Turbo
-    client = openai.OpenAI(api_key=api_key)
+    # Send the request to OpenAI's GPT-4-Turbo
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
     prompt = prompts.extract_predictions_prompt.format(intro=intro, transcript=transcript)
 
     response = client.chat.completions.create(

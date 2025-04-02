@@ -1,23 +1,15 @@
-import os
 import openai
 import json
 import requests
-
 from projectY_modules import prompts
+from projectY_modules.config import OPENAI_API_KEY, PERPLEXITY_API_KEY
 
 
 def verify_prediction(prediction, search_snippets):
     """Use GPT-4o to verify if a prediction is TRUE, FALSE, UNCLEAR, or NOT YET,
        and extract the key event from search results."""
-    api_key = os.getenv("OPENAI_API_KEY")
-
-
-    if not api_key:
-        raise ValueError("OpenAI API key is missing. Set the OPENAI_API_KEY environment variable.")
-
-    client = openai.OpenAI(api_key=api_key)
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
     prompt = prompts.verify_prediction_prompt.format(prediction=prediction, search_snippets=search_snippets)
-
 
     response = client.chat.completions.create(
         model="gpt-4o",
@@ -30,13 +22,8 @@ def verify_prediction(prediction, search_snippets):
 
 def verify_prediction_with_perplexity(prediction, verbose):
     """Use Perplexity API to verify if a prediction is TRUE, FALSE, UNCLEAR, or NOT YET."""
-
-    api_key = os.getenv("PERPLEXITY_API_KEY")
-    if not api_key:
-        raise ValueError("PERPLEXITY_API_KEY is missing.")
-
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "Authorization": f"Bearer {PERPLEXITY_API_KEY}",
         "Accept": "application/json",
         "Content-Type": "application/json"
     }

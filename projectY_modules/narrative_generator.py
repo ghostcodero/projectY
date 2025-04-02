@@ -1,15 +1,11 @@
-import os
 import openai
 from projectY_modules import prompts
+from projectY_modules.config import OPENAI_API_KEY
 
 def generate_narrative(video_title, intro_text, verified_results, verbose=False):
     """Generates a podcast-style narrative summarizing the predictions, outcomes, and ratings."""
 
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY environment variable is not set.")
-
-    client = openai.OpenAI(api_key=api_key)
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
     # Format the prediction results into readable markdown-style bullets
     prediction_blocks = ""
