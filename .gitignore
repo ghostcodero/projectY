@@ -1,5 +1,23 @@
 # Ignore downloaded YouTube videos/audio files
 downloads/
+downloads/*
+
+# Ignore generated transcripts
+transcripts/
+transcripts/*
+
+# Ignore intro files
+intros/
+intros/*
+
+# Ignore log files
+*.log
+projectY.log
+
+# Ignore temporary files
+*.chunk*.mp3
+*.tmp
+*.temp
 
 # Ignore Python cache files
 __pycache__/
