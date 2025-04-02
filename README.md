@@ -19,6 +19,12 @@ A tool for analyzing and verifying predictions from YouTube videos or transcript
   - Podcast-style narrative generation
   - Support for introductory context
 
+- **Logging and Monitoring**
+  - Comprehensive logging system with multiple levels (INFO, DEBUG, ERROR)
+  - Detailed error tracking and debugging information
+  - Log file generation with timestamps
+  - Configurable verbosity levels
+
 ## Installation
 
 1. Clone the repository:
@@ -55,7 +61,7 @@ python projectY.py -t path/to/transcript.txt
 
 ### Advanced Options
 
-- `-v, --verbose`: Enable verbose output
+- `-v, --verbose`: Enable verbose output (sets logging level to INFO)
 - `--intro-file`: Provide additional context for the transcript
 
 Example with all options:
@@ -74,10 +80,12 @@ projectY/
 │   ├── prediction_extractor.py  # Prediction extraction
 │   ├── prediction_verifier.py   # Prediction verification
 │   ├── narrative_generator.py   # Narrative generation
+│   ├── config.py           # Configuration and environment
 │   ├── prompts.py          # AI prompts
 │   └── utilities.py        # Utility functions
 ├── downloads/              # Downloaded audio files
 ├── transcripts/           # Generated transcripts
+├── projectY.log          # Application log file
 └── requirements.txt       # Project dependencies
 ```
 
@@ -101,6 +109,16 @@ The tool generates:
 2. A podcast-style narrative summarizing the analysis
 3. Saved transcripts in the `transcripts/` directory
 4. Downloaded audio files in the `downloads/` directory
+5. A comprehensive log file (`projectY.log`) with detailed execution information
+
+## Logging
+
+The application uses Python's built-in logging module with the following features:
+- Multiple log levels (INFO, DEBUG, ERROR)
+- Log file output with timestamps
+- Console output for important messages
+- Detailed error tracking and debugging information
+- Configurable verbosity through command-line options
 
 ## Contributing
 
