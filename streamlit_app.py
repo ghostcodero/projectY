@@ -29,7 +29,7 @@ from projectY_modules import narrative_generator
 # Configure page
 st.set_page_config(
     page_title="ProjectY - Prediction Analysis Tool",
-    page_icon="🎯",
+    page_icon="https://img.icons8.com/color/48/target.png",  # Custom image URL
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -125,9 +125,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def main():
-    # Header
-    st.markdown('<h1 class="main-header">🎯 ProjectY</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align: center; font-size: 1.2rem;">Analyze and verify predictions from YouTube videos or transcripts</p>', unsafe_allow_html=True)
+    # Header with custom image
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col1:
+        st.image("https://img.icons8.com/color/96/target.png", width=80)
+    
+    with col2:
+        st.markdown('<h1 class="main-header">🎯 ProjectY</h1>', unsafe_allow_html=True)
+        st.markdown('<p style="text-align: center; font-size: 1.2rem;">Analyze and verify predictions from YouTube videos or transcripts</p>', unsafe_allow_html=True)
+    
+    with col3:
+        st.image("https://img.icons8.com/color/96/target.png", width=80)
     
     # Usage information
     usage = load_usage_data()
