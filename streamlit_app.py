@@ -29,7 +29,7 @@ from projectY_modules import narrative_generator
 # Configure page
 st.set_page_config(
     page_title="ProjectY - Prediction Analysis Tool",
-    page_icon="https://img.icons8.com/color/48/target.png",  # Custom image URL
+    page_icon="📊",  # Changed to a chart emoji instead of target
     layout="wide",
     initial_sidebar_state="expanded"
 )
