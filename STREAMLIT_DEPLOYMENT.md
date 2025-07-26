@@ -35,6 +35,22 @@ After setting the environment variables:
 2. Click "Redeploy" button
 3. Wait for the app to restart
 
+## Important Notes
+
+### YouTube Functionality Limitation
+- **YouTube video analysis may not work** due to missing FFmpeg in Streamlit Cloud
+- **Recommended alternatives:**
+  - Use "Upload Transcript" to upload a text file
+  - Use "Paste Transcript" to copy/paste transcript text
+- These alternatives work reliably in all environments
+
+### Working Features
+✅ **Transcript Upload** - Upload .txt files  
+✅ **Paste Transcript** - Copy/paste text directly  
+✅ **Prediction Analysis** - Full analysis functionality  
+✅ **Results Download** - Export analysis results  
+⚠️ **YouTube Download** - May not work due to FFmpeg dependency  
+
 ## Troubleshooting
 
 ### Common Issues:
@@ -44,13 +60,14 @@ After setting the environment variables:
    - Check that the variable names are exactly correct (case-sensitive)
    - Redeploy after setting variables
 
-2. **Import Errors**
+2. **"ffprobe and ffmpeg not found" Error**
+   - This is expected for YouTube downloads
+   - Use "Upload Transcript" or "Paste Transcript" instead
+   - These methods work without FFmpeg
+
+3. **Import Errors**
    - Make sure all dependencies are in `requirements.txt`
    - Check that the main file path is correct (`streamlit_app.py`)
-
-3. **FFmpeg Issues**
-   - Streamlit Cloud may not have FFmpeg installed
-   - Consider using only transcript upload/paste features initially
 
 ### Cost Control:
 
@@ -69,4 +86,5 @@ After setting the environment variables:
 If you encounter issues:
 1. Check the Streamlit Cloud logs
 2. Verify environment variables are set correctly
-3. Test locally first with `streamlit run streamlit_app.py` 
+3. Test locally first with `streamlit run streamlit_app.py`
+4. Use transcript upload/paste methods for reliable functionality 

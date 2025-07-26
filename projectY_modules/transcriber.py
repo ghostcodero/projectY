@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 WHISPER_MAX_FILE_SIZE = 25 * 1024 * 1024
 
 def transcribe_audio(file_path):
-    """Sends an MP3 file to OpenAI's Whisper API, saves the transcript, and returns it."""
+    """Sends an audio file to OpenAI's Whisper API, saves the transcript, and returns it."""
     logger.info("Starting audio transcription...")
     
     try:
@@ -34,6 +34,17 @@ def transcribe_audio(file_path):
             else:
                 logger.error("File too large and pydub not available for splitting. Please use a smaller file or install pydub.")
                 raise ValueError(f"File size ({file_size/1024/1024:.2f}MB) exceeds Whisper API limit of 25MB and pydub is not available for splitting.")
+        
+        # Check if file exists and is readable
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Audio file not found: {file_path}")
+        
+        # Whisper API supports multiple audio formats: mp3, mp4, mpeg, mpga, m4a, wav, webm
+        supported_formats = ['.mp3', '.mp4', '.mpeg', '.mpga', '.m4a', '.wav', '.webm']
+        file_ext = os.path.splitext(file_path)[1].lower()
+        
+        if file_ext not in supported_formats:
+            logger.warning(f"File format {file_ext} may not be supported by Whisper API. Attempting anyway...")
         
         client = openai.OpenAI(api_key=OPENAI_API_KEY)
         with open(file_path, "rb") as audio_file:
@@ -76,8 +87,20 @@ def transcribe_large_file(file_path):
         raise ValueError("pydub is not available. Cannot split large files.")
     
     try:
-        # Load the audio file
-        audio = pydub.AudioSegment.from_mp3(file_path)
+        # Load the audio file - pydub supports multiple formats
+        file_ext = os.path.splitext(file_path)[1].lower()
+        
+        if file_ext == '.mp3':
+            audio = pydub.AudioSegment.from_mp3(file_path)
+        elif file_ext == '.m4a':
+            audio = pydub.AudioSegment.from_file(file_path, format="m4a")
+        elif file_ext == '.webm':
+            audio = pydub.AudioSegment.from_file(file_path, format="webm")
+        elif file_ext == '.mp4':
+            audio = pydub.AudioSegment.from_file(file_path, format="mp4")
+        else:
+            # Try to load with pydub's automatic format detection
+            audio = pydub.AudioSegment.from_file(file_path)
         
         # Calculate chunk size (20MB to leave some buffer)
         chunk_size = 20 * 1024 * 1024
