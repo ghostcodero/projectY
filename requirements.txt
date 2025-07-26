@@ -3,7 +3,7 @@ openai==1.65.4
 yt-dlp==2025.3.27
 requests==2.32.3
 
-# Audio processing
+# Audio processing (optional - will work without pydub for small files)
 pydub==0.25.1
 
 # Web application

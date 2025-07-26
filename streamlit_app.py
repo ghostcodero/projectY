@@ -254,13 +254,23 @@ def analyze_youtube_video(url, verbose, intro_file):
                 st.info("Step 1/4: Downloading video...")
             
             # Download video
-            audio_path = downloader.download_audio(url)
+            try:
+                audio_path = downloader.download_audio(url)
+            except Exception as e:
+                st.error(f"❌ Error downloading video: {str(e)}")
+                st.warning("💡 Tip: Try using the 'Upload Transcript' or 'Paste Transcript' options instead.")
+                return
             
             with progress_container:
                 st.info("Step 2/4: Transcribing audio...")
             
             # Transcribe
-            transcript = transcriber.transcribe_audio(audio_path)
+            try:
+                transcript = transcriber.transcribe_audio(audio_path)
+            except Exception as e:
+                st.error(f"❌ Error transcribing audio: {str(e)}")
+                st.warning("💡 Tip: Try using the 'Upload Transcript' or 'Paste Transcript' options instead.")
+                return
             
             with progress_container:
                 st.info("Step 3/4: Extracting predictions...")

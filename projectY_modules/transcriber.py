@@ -1,7 +1,15 @@
 import os
 import openai
 import logging
-import pydub
+
+# Try to import pydub, but handle gracefully if not available
+try:
+    import pydub
+    PYDUB_AVAILABLE = True
+except ImportError:
+    PYDUB_AVAILABLE = False
+    logging.warning("pydub not available. Large file splitting will be disabled.")
+
 from projectY_modules.config import OPENAI_API_KEY
 
 # Set up logger for this module
@@ -19,8 +27,13 @@ def transcribe_audio(file_path):
         file_size = os.path.getsize(file_path)
         if file_size > WHISPER_MAX_FILE_SIZE:
             logger.warning(f"File size ({file_size/1024/1024:.2f}MB) exceeds Whisper API limit of 25MB")
-            logger.info("Attempting to split and transcribe file in chunks...")
-            return transcribe_large_file(file_path)
+            
+            if PYDUB_AVAILABLE:
+                logger.info("Attempting to split and transcribe file in chunks...")
+                return transcribe_large_file(file_path)
+            else:
+                logger.error("File too large and pydub not available for splitting. Please use a smaller file or install pydub.")
+                raise ValueError(f"File size ({file_size/1024/1024:.2f}MB) exceeds Whisper API limit of 25MB and pydub is not available for splitting.")
         
         client = openai.OpenAI(api_key=OPENAI_API_KEY)
         with open(file_path, "rb") as audio_file:
@@ -59,6 +72,9 @@ def transcribe_audio(file_path):
 
 def transcribe_large_file(file_path):
     """Handle transcription of large files by splitting them into chunks."""
+    if not PYDUB_AVAILABLE:
+        raise ValueError("pydub is not available. Cannot split large files.")
+    
     try:
         # Load the audio file
         audio = pydub.AudioSegment.from_mp3(file_path)
@@ -98,19 +114,19 @@ def transcribe_large_file(file_path):
                     os.remove(chunk_path)
         
         # Combine transcripts
-        transcript = " ".join(full_transcript)
+        combined_transcript = " ".join(full_transcript)
         
-        # Save full transcript
+        # Save combined transcript
         os.makedirs("transcripts", exist_ok=True)
         base_name = os.path.splitext(os.path.basename(file_path))[0]
         transcript_path = os.path.join("transcripts", f"{base_name}.txt")
         
         with open(transcript_path, "w", encoding="utf-8") as f:
-            f.write(transcript)
+            f.write(combined_transcript)
         
-        logger.info(f"Full transcript saved to: {transcript_path}")
-        return transcript
+        logger.info(f"Large file transcript saved to: {transcript_path}")
+        return combined_transcript
         
     except Exception as e:
-        logger.error(f"Error processing large file: {str(e)}")
+        logger.error(f"Error transcribing large file: {str(e)}")
         raise

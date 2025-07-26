@@ -2,6 +2,23 @@
 
 A tool for analyzing and verifying predictions from YouTube videos or transcripts. ProjectY downloads YouTube videos, transcribes them, extracts predictions, and verifies their outcomes using multiple AI models.
 
+## ⚠️ Cost Warning
+
+**Important:** This application uses external APIs that incur costs:
+- **OpenAI API**: For transcription and prediction analysis
+- **Perplexity API**: For prediction verification
+
+**Cost Control Measures:**
+- The web application includes rate limiting (10 requests/day per session)
+- 30-second cooldown between requests
+- Monitor your API usage in your respective dashboards
+- Set spending limits in your OpenAI and Perplexity accounts
+
+**Estimated Costs:**
+- Transcription: ~$0.006 per minute of audio
+- Prediction analysis: ~$0.01-0.05 per analysis
+- Verification: ~$0.01-0.03 per prediction
+
 ## Features
 
 - **YouTube Video Processing**
