@@ -2,9 +2,24 @@ import streamlit as st
 import os
 import tempfile
 from pathlib import Path
+import time
+from datetime import datetime, timedelta
+import json
 
-# Import your existing modules
-from projectY_modules import config
+# Check environment variables first before importing modules
+if not os.getenv('OPENAI_API_KEY') or not os.getenv('PERPLEXITY_API_KEY'):
+    st.error("""
+    ❌ **API Keys Not Found!**
+    
+    Please set the following environment variables:
+    - `OPENAI_API_KEY`
+    - `PERPLEXITY_API_KEY`
+    
+    Contact the administrator if you need access.
+    """)
+    st.stop()
+
+# Import your existing modules only after environment check
 from projectY_modules import downloader
 from projectY_modules import transcriber
 from projectY_modules import prediction_extractor
@@ -18,6 +33,49 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Rate limiting and usage tracking
+def load_usage_data():
+    """Load usage data from session state or file"""
+    if 'usage_data' not in st.session_state:
+        st.session_state.usage_data = {
+            'daily_requests': 0,
+            'last_reset': datetime.now().strftime('%Y-%m-%d'),
+            'total_requests': 0,
+            'last_request_time': None
+        }
+    return st.session_state.usage_data
+
+def check_rate_limit():
+    """Check if user has exceeded rate limits"""
+    usage = load_usage_data()
+    now = datetime.now()
+    
+    # Reset daily counter if it's a new day
+    if usage['last_reset'] != now.strftime('%Y-%m-%d'):
+        usage['daily_requests'] = 0
+        usage['last_reset'] = now.strftime('%Y-%m-%d')
+    
+    # Check daily limit (adjust as needed)
+    DAILY_LIMIT = 10  # Maximum requests per day
+    if usage['daily_requests'] >= DAILY_LIMIT:
+        return False, f"Daily limit of {DAILY_LIMIT} requests reached. Please try again tomorrow."
+    
+    # Check time between requests (minimum 30 seconds)
+    if usage['last_request_time']:
+        last_request = datetime.fromisoformat(usage['last_request_time'])
+        if (now - last_request).total_seconds() < 30:
+            return False, "Please wait 30 seconds between requests."
+    
+    return True, ""
+
+def update_usage():
+    """Update usage statistics"""
+    usage = load_usage_data()
+    usage['daily_requests'] += 1
+    usage['total_requests'] += 1
+    usage['last_request_time'] = datetime.now().isoformat()
+    st.session_state.usage_data = usage
 
 # Custom CSS for better styling
 st.markdown("""
@@ -55,6 +113,14 @@ st.markdown("""
         border-radius: 0.5rem;
         margin: 1rem 0;
     }
+    .warning-box {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin: 1rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -62,6 +128,22 @@ def main():
     # Header
     st.markdown('<h1 class="main-header">🎯 ProjectY</h1>', unsafe_allow_html=True)
     st.markdown('<p style="text-align: center; font-size: 1.2rem;">Analyze and verify predictions from YouTube videos or transcripts</p>', unsafe_allow_html=True)
+    
+    # Usage information
+    usage = load_usage_data()
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Daily Requests", f"{usage['daily_requests']}/10")
+    with col2:
+        st.metric("Total Requests", usage['total_requests'])
+    with col3:
+        if usage['last_request_time']:
+            last_time = datetime.fromisoformat(usage['last_request_time'])
+            st.metric("Last Request", last_time.strftime('%H:%M:%S'))
+    
+    # Rate limit warning
+    if usage['daily_requests'] >= 8:
+        st.warning("⚠️ You're approaching the daily limit of 10 requests!")
     
     # Sidebar for configuration
     with st.sidebar:
@@ -82,6 +164,21 @@ def main():
             type=['txt'],
             help="Provide additional context for the analysis"
         )
+        
+        # Usage information in sidebar
+        st.markdown("---")
+        st.markdown("**Usage Limits:**")
+        st.markdown("- 10 requests per day")
+        st.markdown("- 30 seconds between requests")
+        st.markdown("- This helps control API costs")
+        
+        # Cost warning
+        st.markdown("---")
+        st.markdown("**⚠️ Cost Warning:**")
+        st.markdown("Each analysis uses:")
+        st.markdown("- OpenAI API (transcription + analysis)")
+        st.markdown("- Perplexity API (verification)")
+        st.markdown("Monitor your API usage!")
     
     # Main content area
     if input_method == "YouTube URL":
@@ -94,7 +191,13 @@ def main():
         
         if st.button("🚀 Analyze Video", type="primary"):
             if url:
-                analyze_youtube_video(url, verbose, intro_file)
+                # Check rate limit
+                allowed, message = check_rate_limit()
+                if not allowed:
+                    st.error(f"❌ {message}")
+                else:
+                    update_usage()
+                    analyze_youtube_video(url, verbose, intro_file)
             else:
                 st.error("Please enter a YouTube URL")
     
@@ -109,7 +212,13 @@ def main():
         
         if st.button("🚀 Analyze Transcript", type="primary"):
             if uploaded_file is not None:
-                analyze_uploaded_transcript(uploaded_file, verbose, intro_file)
+                # Check rate limit
+                allowed, message = check_rate_limit()
+                if not allowed:
+                    st.error(f"❌ {message}")
+                else:
+                    update_usage()
+                    analyze_uploaded_transcript(uploaded_file, verbose, intro_file)
             else:
                 st.error("Please upload a transcript file")
     
@@ -124,7 +233,13 @@ def main():
         
         if st.button("🚀 Analyze Transcript", type="primary"):
             if transcript_text.strip():
-                analyze_pasted_transcript(transcript_text, verbose, intro_file)
+                # Check rate limit
+                allowed, message = check_rate_limit()
+                if not allowed:
+                    st.error(f"❌ {message}")
+                else:
+                    update_usage()
+                    analyze_pasted_transcript(transcript_text, verbose, intro_file)
             else:
                 st.error("Please paste some transcript text")
 
