@@ -126,7 +126,7 @@ st.markdown("""
 
 def main():
     # Header
-    st.markdown('<h1 class="main-header">ProjectY</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Prediction Rater</h1>', unsafe_allow_html=True)
     st.markdown('<p style="text-align: center; font-size: 1.2rem;">Analyze and verify predictions from YouTube videos or transcripts</p>', unsafe_allow_html=True)
     
     # Usage information
