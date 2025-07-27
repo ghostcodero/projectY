@@ -5,31 +5,47 @@ extract_predictions_prompt = """
     
     {intro}
 
-    Your goal is to extract **clear, concrete predictions about the future**, 
-    avoiding vague or uncertain statements.
+    Your goal is to extract **clear, concrete predictions about future OUTCOMES**, 
+    avoiding scheduled events, facts, or uncertain statements.
 
-    **What counts as a prediction?**
-    - Statements that clearly express **what will happen**, **what is expected**, or **likely future outcomes**.
-    - Example phrases: "will happen," "is expected to," "is likely to," "is projected to," "experts predict that," "data suggests that."
+    **What counts as a PREDICTION?**
+    - Statements that predict **WHO WILL WIN, WHAT WILL HAPPEN, or WHAT THE OUTCOME WILL BE**
+    - Statements about **uncertain future results** that could go either way
+    - Example phrases: "will win," "will lose," "will happen," "is expected to succeed," "is likely to fail," "will reach," "will achieve"
 
-    **What to ignore?**
-    - Unclear or subjective statements (e.g., "it's not over," "maybe," "we will see").
-    - General reflections, opinions, or past events.
+    **What to IGNORE (these are NOT predictions):**
+    - **Scheduled events** (e.g., "Fenerbahce is going to play a game next Tuesday" - this is a fact)
+    - **Past events** or historical information
+    - **General opinions** without specific outcomes
+    - **Vague statements** (e.g., "it's not over," "maybe," "we will see")
+    - **Aspirational goals** without specific predictions
+
+    **Key Distinction:**
+    - "Fenerbahce is going to play a game next Tuesday" = SCHEDULED EVENT (fact)
+    - "Fenerbahce will win the game next Tuesday" = PREDICTION (outcome)
+    - "The meeting is scheduled for 3 PM" = SCHEDULED EVENT (fact)
+    - "The meeting will be productive" = PREDICTION (outcome)
+    - "The election is on November 5th" = SCHEDULED EVENT (fact)
+    - "Candidate X will win the election" = PREDICTION (outcome)
+    - "My burthday will be next week" = SCHEDULED EVENT (fact)
+    - "I will receive a lego set for my birthday" = PREDICTION (outcome)
+    
 
     **Transcript:**
     {transcript}
 
     **Task:**
-    - Extract **up to 10 of the most important predictions** in a numbered list.
-    - Ensure that each prediction is **specific, meaningful, and clearly about the future**.
-    - If no predictions are found, respond with: "No clear predictions were made in this conversation."
+    - Extract **up to 10 of the most important predictions about OUTCOMES** in a numbered list.
+    - Focus on predictions about **WHO will win, WHAT will happen, or WHAT the result will be**.
+    - Ignore scheduled events, facts, or general statements.
+    - If no predictions are found, respond with: "No clear predictions about outcomes were made in this conversation."
 
     **Response Format Example:**
-    1. The team is expected to switch to a defensive strategy in the next game.
-    2. Analysts predict that inflation will decrease by 2% next quarter.
+    1. Fenerbahce will win the Champions League game next Tuesday.
+    2. Inflation will decrease by 2% next quarter.
     3. AI adoption in healthcare will grow significantly in the next five years.
-    4. The player is likely to miss the next match due to injury.
-    5. Scientists anticipate a major breakthrough in battery technology by 2030.
+    4. The player will score at least 20 goals this season.
+    5. Scientists will achieve a major breakthrough in battery technology by 2030.
     """
 
 #ANTHROPIC CREATED PROMPT
